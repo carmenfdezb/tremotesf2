@@ -28,7 +28,6 @@ BuildRequires: cmake(Qt5Network)
 BuildRequires: cmake(Qt5Test)
 BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt5X11Extras)
-BuildRequires: cmake(fmt)
 BuildRequires: cmake(KF5WidgetsAddons)
 BuildRequires: cmake(KF5WindowSystem)
 

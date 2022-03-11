@@ -20,6 +20,8 @@
 
 #include <limits>
 
+#include <QDebug>
+
 #include <QCoreApplication>
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>

@@ -18,13 +18,11 @@
 
 #include "ipcserver_dbus_service.h"
 
+#include <QDebug>
 #include <QUrl>
 
-#include "libtremotesf/println.h"
 #include "ipcserver_dbus.h"
 #include "ipcserver_dbus_service_adaptor.h"
-
-SPECIALIZE_FORMATTER_FOR_QDEBUG(QDBusError)
 
 namespace tremotesf
 {
@@ -39,14 +37,14 @@ namespace tremotesf
 
         auto connection(QDBusConnection::sessionBus());
         if (connection.registerService(IpcServerDbus::serviceName())) {
-            printlnInfo("Registered D-Bus service");
+            qInfo("Registered D-Bus service");
             if (connection.registerObject(IpcServerDbus::objectPath(), this)) {
-                printlnInfo("Registered D-Bus object");
+                qInfo("Registered D-Bus object");
             } else {
-                printlnWarning("Failed to register D-Bus object: {}", connection.lastError());
+                qWarning() << "Failed to register D-Bus object" << connection.lastError();
             }
         } else {
-            printlnWarning("Failed toregister D-Bus service", connection.lastError());
+            qWarning() << "Failed toregister D-Bus service" << connection.lastError();
         }
     }
 
@@ -55,13 +53,13 @@ namespace tremotesf
      */
     void IpcDbusService::Activate(const QVariantMap& platform_data)
     {
-        printlnInfo("Window activation requested, platform_data = {}", platform_data);
+        qInfo().nospace() << "Window activation requested, platform_data=" << platform_data;
         emit mIpcServer->windowActivationRequested(platform_data.value(torrentHashField).toString(), platform_data.value(desktopStartupIdField).toByteArray());
     }
 
     void IpcDbusService::Open(const QStringList& uris, const QVariantMap& platform_data)
     {
-        printlnInfo("Torrents adding requested, uris = {}, platform_data = {}", uris, platform_data);
+        qInfo().nospace() << "Torrents adding requested, uris=" << uris << ", platform_data=" << platform_data;
         QStringList files;
         QStringList urls;
         for (const QUrl& url : QUrl::fromStringList(uris)) {
@@ -78,6 +76,6 @@ namespace tremotesf
 
     void IpcDbusService::ActivateAction(const QString& action_name, const QVariantList& parameter, const QVariantMap& platform_data)
     {
-        printlnInfo("Action activated, action_name = {}, parameter = {}, platform_data = {}", action_name, parameter, platform_data);
+        qInfo().nospace() << "Action activated, action_name=" << action_name << ", parameter=" << parameter << ", platform_data=" << platform_data;
     }
 }
