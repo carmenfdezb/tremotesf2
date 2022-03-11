@@ -5,9 +5,6 @@
 
 #include <QTest>
 
-#include <fmt/ranges.h>
-#include "println.h"
-
 #include "itemlistupdater.h"
 
 struct Item {
@@ -27,17 +24,11 @@ struct Item {
     }
 };
 
-template<>
-struct fmt::formatter<Item> {
-    constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin()) {
-        return ctx.begin();
-    }
-
-    template<typename FormatContext>
-    auto format(const Item& item, FormatContext& ctx) -> decltype(ctx.out()) {
-        return fmt::format_to(ctx.out(), "Item(id={}, data={})", item.id, item.data);
-    }
-};
+inline QDebug operator<<(QDebug debug, const Item& item) {
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "Item(id=" << item.id << ", data=" << item.data << ")";
+    return debug;
+}
 
 class AbortTest : public std::exception {};
 
@@ -267,10 +258,10 @@ private:
         checkThatItemsAreUnique(oldList);
         checkThatItemsAreUnique(newList);
 
-        printlnInfo("Checking update from {}", oldList);
+        qInfo() << "Checking update from" << oldList;
         std::sort(newList.begin(), newList.end());
         do {
-            printlnInfo(" - to {}", newList);
+            qInfo() << " - to" << newList;
             try {
                 checkUpdateInner(oldList, newList);
             } catch (const AbortTest&) {
