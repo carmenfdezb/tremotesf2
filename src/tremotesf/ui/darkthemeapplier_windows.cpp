@@ -83,11 +83,12 @@ namespace {
                 const auto qcolor = QGuiApplication::palette().color(QPalette::Window);
                 const auto color = RGB(qcolor.red(), qcolor.green(), qcolor.blue());
                 try {
-                    winrt::check_hresult(
-                        DwmSetWindowAttribute(reinterpret_cast<HWND>(window->winId()), DWMWA_CAPTION_COLOR, &color, sizeof(color))
+                    checkHResult(
+                        DwmSetWindowAttribute(reinterpret_cast<HWND>(window->winId()), DWMWA_CAPTION_COLOR, &color, sizeof(color)),
+                        "DwmSetWindowAttribute"
                     );
                 } catch (const winrt::hresult_error& e) {
-                    logWarning("DwmSetWindowAttribute failed: {}", e);
+                    logWarning(e);
                 }
             } else {
                 logInfo("Setting DWMWA_USE_IMMERSIVE_DARK_MODE on {}", *window);
@@ -113,11 +114,12 @@ namespace {
                 }();
                 const auto useImmersiveDarkMode = static_cast<BOOL>(darkTheme);
                 try {
-                    winrt::check_hresult(
-                        DwmSetWindowAttribute(reinterpret_cast<HWND>(window->winId()), attribute, &useImmersiveDarkMode, sizeof(useImmersiveDarkMode))
+                    checkHResult(
+                        DwmSetWindowAttribute(reinterpret_cast<HWND>(window->winId()), attribute, &useImmersiveDarkMode, sizeof(useImmersiveDarkMode)),
+                        "DwmSetWindowAttribute"
                     );
                 } catch (const winrt::hresult_error& e) {
-                    logWarning("DwmSetWindowAttribute failed: {}", e);
+                    logWarning(e);
                 }
             }
         }
