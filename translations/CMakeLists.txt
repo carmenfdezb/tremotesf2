@@ -2,6 +2,7 @@ find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
 # Make sure to also change translations.qrc
 qt5_add_translation(qm_files
     en.ts
+    es_ES.ts
     es.ts
     fr.ts
     it_IT.ts

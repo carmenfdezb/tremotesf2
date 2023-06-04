@@ -10,6 +10,7 @@ _dir="$(realpath $(dirname $0))"
 cd "$_dir"
 
 QT_SELECT=5 $_lupdate ../src ../qml -ts en.ts \
+                                        es_ES.ts \
                                         es.ts \
                                         fr.ts \
                                         it_IT.ts \
